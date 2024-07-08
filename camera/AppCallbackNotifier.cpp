@@ -87,7 +87,7 @@ void AppCallbackNotifier::EncoderDoneCb(void* main_jpeg, void* thumb_jpeg, Camer
     if(encoded_mem && encoded_mem->data && (jpeg_size > 0)) {
         if (cookie2) {
             ExifElementsTable* exif = (ExifElementsTable*) cookie2;
-            Section_t* exif_section = NULL;
+            //Section_t* exif_section = NULL;
 
             exif->insertExifToJpeg((unsigned char*) encoded_mem->data, jpeg_size);
 
@@ -97,14 +97,14 @@ void AppCallbackNotifier::EncoderDoneCb(void* main_jpeg, void* thumb_jpeg, Camer
                                                (int)thumb_param->jpeg_size);
             }
 
-            exif_section = FindSection(M_EXIF);
+            /*exif_section = FindSection(M_EXIF);
 
             if (exif_section) {
                 picture = mRequestMemory(-1, jpeg_size + exif_section->Size, 1, NULL);
                 if (picture && picture->data) {
                     exif->saveJpeg((unsigned char*) picture->data, jpeg_size + exif_section->Size);
                 }
-            }
+            }*/
             delete exif;
             cookie2 = NULL;
         } else {
@@ -318,7 +318,7 @@ void AppCallbackNotifier::notifyEvent()
             return;
         }
     }
-    bool ret = true;
+    /*bool ret = true;*/
     CameraHalEvent *evt = NULL;
     CameraHalEvent::FocusEventData *focusEvtData;
     CameraHalEvent::ZoomEventData *zoomEvtData;
@@ -486,7 +486,7 @@ static void copy2Dto1D(void *dst,
     CAMHAL_LOGVB("pixelFormat= %s; offset=%d", pixelFormat,offset);
 
     if (pixelFormat!=NULL) {
-        if (strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
+        if (strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
             bytesPerPixel = 2;
             bufferSrc = ( unsigned char * ) y_uv[0] + offset;
             uint32_t xOff = offset % stride;
@@ -531,8 +531,8 @@ static void copy2Dto1D(void *dst,
             }
 
             return;
-        } else if (strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
-                   strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_YUV420P) == 0) {
+        } else if (strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
+                   strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0) {
             bytesPerPixel = 1;
             bufferDst = ( unsigned char * ) dst;
             bufferDstEnd = ( unsigned char * ) dst + width*height*bytesPerPixel;
@@ -557,7 +557,7 @@ static void copy2Dto1D(void *dst,
 
             bufferSrc_UV = ( uint16_t * ) ((uint8_t*)y_uv[1] + (stride/2)*yOff + xOff);
 
-            if (strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
+            if (strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
                  uint16_t *bufferDst_UV;
 
                 // Step 2: UV plane: convert NV12 to NV21 by swapping U & V
@@ -605,7 +605,7 @@ static void copy2Dto1D(void *dst,
                     : "cc", "memory", "q0", "q1"
                     );
                 }
-            } else if (strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_YUV420P) == 0) {
+            } else if (strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0) {
                  uint16_t *bufferDst_U;
                  uint16_t *bufferDst_V;
 
@@ -671,7 +671,7 @@ static void copy2Dto1D(void *dst,
             }
             return ;
 
-        } else if(strcmp(pixelFormat, CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
+        } else if(strcmp(pixelFormat, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
             bytesPerPixel = 2;
         }
     }
@@ -725,7 +725,7 @@ void AppCallbackNotifier::copyAndSendPictureFrame(CameraFrame* frame, int32_t ms
 
 void AppCallbackNotifier::copyAndSendPreviewFrame(CameraFrame* frame, int32_t msgType)
 {
-    camera_memory_t* picture = NULL;
+    /*camera_memory_t* picture = NULL;*/
     void* dest = NULL;
 
     // scope for lock
@@ -764,7 +764,7 @@ void AppCallbackNotifier::copyAndSendPreviewFrame(CameraFrame* frame, int32_t ms
                     memset(dest, 0, (mPreviewMemory->size / MAX_BUFFERS));
                 }
             } else {
-              if ((NULL == frame->mYuv[0]) || (NULL == frame->mYuv[1])){
+              if ((0 == frame->mYuv[0]) || (0 == frame->mYuv[1])){
                 CAMHAL_LOGEA("Error! One of the YUV Pointer is NULL");
                 goto exit;
               }
@@ -835,8 +835,8 @@ void AppCallbackNotifier::notifyFrame()
     ///Receive and send the frame notifications to app
     TIUTILS::Message msg;
     CameraFrame *frame;
-    MemoryHeapBase *heap;
-    MemoryBase *buffer = NULL;
+    /*MemoryHeapBase *heap;
+    MemoryBase *buffer = NULL;*/
     sp<MemoryBase> memBase;
     void *buf = NULL;
 
@@ -851,7 +851,7 @@ void AppCallbackNotifier::notifyFrame()
         }
     }
 
-    bool ret = true;
+    /*bool ret = true;*/
 
     frame = NULL;
     switch(msg.command)
@@ -906,17 +906,17 @@ void AppCallbackNotifier::notifyFrame()
                         buf = raw_picture->data;
                     }
 
-                    CameraParameters parameters;
+                    hardware::camera::common::V1_0::helper::CameraParameters parameters;
                     char *params = mCameraHal->getParameters();
                     const String8 strParams(params);
                     parameters.unflatten(strParams);
 
-                    encode_quality = parameters.getInt(CameraParameters::KEY_JPEG_QUALITY);
+                    encode_quality = parameters.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_QUALITY);
                     if (encode_quality < 0 || encode_quality > 100) {
                         encode_quality = 100;
                     }
 
-                    tn_quality = parameters.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_QUALITY);
+                    tn_quality = parameters.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_QUALITY);
                     if (tn_quality < 0 || tn_quality > 100) {
                         tn_quality = 100;
                     }
@@ -947,11 +947,11 @@ void AppCallbackNotifier::notifyFrame()
                         main_jpeg->out_height = frame->mHeight;
                         main_jpeg->right_crop = rightCrop;
                         main_jpeg->start_offset = frame->mOffset;
-                        main_jpeg->format = CameraParameters::PIXEL_FORMAT_YUV422I;
+                        main_jpeg->format = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
                     }
 
-                    tn_width = parameters.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH);
-                    tn_height = parameters.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT);
+                    tn_width = parameters.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH);
+                    tn_height = parameters.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT);
 
                     if ((tn_width > 0) && (tn_height > 0)) {
                         tn_jpeg = (Encoder_libjpeg::params*)
@@ -977,7 +977,7 @@ void AppCallbackNotifier::notifyFrame()
                         tn_jpeg->out_height = tn_height;
                         tn_jpeg->right_crop = 0;
                         tn_jpeg->start_offset = 0;
-                        tn_jpeg->format = CameraParameters::PIXEL_FORMAT_YUV420SP;;
+                        tn_jpeg->format = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP;;
                     }
 
                     sp<Encoder_libjpeg> encoder = new Encoder_libjpeg(main_jpeg,
@@ -987,7 +987,7 @@ void AppCallbackNotifier::notifyFrame()
                                                       this,
                                                       raw_picture,
                                                       exif_data);
-                    encoder->run();
+                    encoder->run("notifyFrame");
                     gEncoderQueue.add(frame->mBuffer, encoder);
                     encoder.clear();
                     if (params != NULL)
@@ -1061,13 +1061,13 @@ void AppCallbackNotifier::notifyFrame()
                                 void *y_uv[2];
                                 mapper.lock((buffer_handle_t)vBuf, CAMHAL_GRALLOC_USAGE, bounds, y_uv);
 
-                                structConvImage input =  {frame->mWidth,
-                                                          frame->mHeight,
+                                structConvImage input =  {static_cast<mmInt32>(frame->mWidth),
+                                                          static_cast<mmInt32>(frame->mHeight),
                                                           4096,
                                                           IC_FORMAT_YCbCr420_lp,
                                                           (mmByte *)frame->mYuv[0],
                                                           (mmByte *)frame->mYuv[1],
-                                                          frame->mOffset};
+                                                          static_cast<mmInt32>(frame->mOffset)};
 
                                 structConvImage output = {mVideoWidth,
                                                           mVideoHeight,
@@ -1157,7 +1157,7 @@ void AppCallbackNotifier::notifyFrame()
 
         };
 
-exit:
+/*exit:*/
 
     if ( NULL != frame )
         {
@@ -1434,11 +1434,11 @@ void AppCallbackNotifier::setFrameProvider(FrameNotifier *frameNotifier)
     LOG_FUNCTION_NAME_EXIT;
 }
 
-status_t AppCallbackNotifier::startPreviewCallbacks(CameraParameters &params, void *buffers, uint32_t *offsets, int fd, size_t length, size_t count)
+status_t AppCallbackNotifier::startPreviewCallbacks(hardware::camera::common::V1_0::helper::CameraParameters &params, void *buffers, uint32_t *offsets, int fd, size_t length, size_t count)
 {
     sp<MemoryHeapBase> heap;
     sp<MemoryBase> buffer;
-    unsigned int *bufArr;
+    /*unsigned int *bufArr;*/
     int size = 0;
 
     LOG_FUNCTION_NAME;
@@ -1464,26 +1464,26 @@ status_t AppCallbackNotifier::startPreviewCallbacks(CameraParameters &params, vo
     //Get the preview pixel format
     mPreviewPixelFormat = params.getPreviewFormat();
 
-     if(strcmp(mPreviewPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
+     if(strcmp(mPreviewPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
         {
         size = w*h*2;
-        mPreviewPixelFormat = CameraParameters::PIXEL_FORMAT_YUV422I;
+        mPreviewPixelFormat = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
         }
-    else if(strcmp(mPreviewPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 )
+    else if(strcmp(mPreviewPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 )
         {
         size = (w*h*3)/2;
-        mPreviewPixelFormat = CameraParameters::PIXEL_FORMAT_YUV420SP;
+        mPreviewPixelFormat = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP;
         }
-    else if(strcmp(mPreviewPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0)
+    else if(strcmp(mPreviewPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0)
         {
         size = w*h*2;
-        mPreviewPixelFormat = CameraParameters::PIXEL_FORMAT_RGB565;
+        mPreviewPixelFormat = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565;
         }
-    else if(strcmp(mPreviewPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_YUV420P) == 0)
+    else if(strcmp(mPreviewPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0)
         {
         int yStride, uvStride, ySize, uvSize;
         alignYV12(w, h, yStride, uvStride, ySize, uvSize, size);
-        mPreviewPixelFormat = CameraParameters::PIXEL_FORMAT_YUV420P;
+        mPreviewPixelFormat = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P;
         }
 
     mPreviewMemory = mRequestMemory(-1, size, AppCallbackNotifier::MAX_BUFFERS, NULL);
@@ -1656,7 +1656,7 @@ status_t AppCallbackNotifier::initSharedVideoBuffers(void *buffers, uint32_t *of
             }
         }
 
-exit:
+/*exit:*/
     LOG_FUNCTION_NAME_EXIT;
 
     return ret;

@@ -255,7 +255,7 @@ void BaseCameraAdapter::removeFramePointers()
 void BaseCameraAdapter::returnFrame(void* frameBuf, CameraFrame::FrameType frameType)
 {
     status_t res = NO_ERROR;
-    size_t subscriberCount = 0;
+    /*size_t subscriberCount = 0;*/
     int refCount = -1;
 
     if ( NULL == frameBuf )
@@ -2259,7 +2259,7 @@ status_t BaseCameraAdapter::rollbackState()
 // please notice that these functions are locked
 CameraAdapter::AdapterState BaseCameraAdapter::getState()
 {
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
 
     LOG_FUNCTION_NAME;
 
@@ -2272,7 +2272,7 @@ CameraAdapter::AdapterState BaseCameraAdapter::getState()
 
 CameraAdapter::AdapterState BaseCameraAdapter::getNextState()
 {
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
 
     LOG_FUNCTION_NAME;
 

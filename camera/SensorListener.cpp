@@ -121,7 +121,7 @@ SensorListener::~SensorListener() {
 
     CAMHAL_LOGDA("Kill looper");
     if (mLooper.get()) {
-        mLooper->removeFd(mSensorEventQueue->getFd());
+        //mLooper->removeFd(mSensorEventQueue->getFd());
         mLooper.clear();
         mLooper = NULL;
     }
@@ -132,7 +132,7 @@ SensorListener::~SensorListener() {
 
 status_t SensorListener::initialize() {
     status_t ret = NO_ERROR;
-    SensorManager& mgr(SensorManager::getInstance());
+    SensorManager& mgr(SensorManager::getInstanceForPackage(String16("CameraHAL")));
 
     LOG_FUNCTION_NAME;
 
@@ -195,7 +195,7 @@ void SensorListener::handleOrientation(uint32_t orientation, uint32_t tilt) {
 
 void SensorListener::enableSensor(sensor_type_t type) {
     Sensor const* sensor;
-    SensorManager& mgr(SensorManager::getInstance());
+    SensorManager& mgr(SensorManager::getInstanceForPackage(String16("CameraHAL")));
 
     LOG_FUNCTION_NAME;
 
@@ -214,7 +214,7 @@ void SensorListener::enableSensor(sensor_type_t type) {
 
 void SensorListener::disableSensor(sensor_type_t type) {
     Sensor const* sensor;
-    SensorManager& mgr(SensorManager::getInstance());
+    SensorManager& mgr(SensorManager::getInstanceForPackage(String16("CameraHAL")));
 
     LOG_FUNCTION_NAME;
 

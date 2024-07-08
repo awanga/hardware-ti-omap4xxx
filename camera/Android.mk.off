@@ -2,7 +2,7 @@ ifeq ($(TARGET_BOARD_PLATFORM),omap4)
 
 LOCAL_PATH:= $(call my-dir)
 
-OMAP4_CAMERA_HAL_USES:= OMX
+# OMAP4_CAMERA_HAL_USES:= OMX
 # OMAP4_CAMERA_HAL_USES:= USB
 
 OMAP4_CAMERA_HAL_SRC := \
@@ -14,8 +14,9 @@ OMAP4_CAMERA_HAL_SRC := \
 	CameraProperties.cpp \
 	MemoryManager.cpp \
 	Encoder_libjpeg.cpp \
-	SensorListener.cpp  \
 	NV12_resize.c
+
+#	SensorListener.cpp
 
 OMAP4_CAMERA_COMMON_SRC:= \
 	CameraParameters.cpp \
@@ -62,9 +63,12 @@ LOCAL_C_INCLUDES += \
     hardware/ti/omap4xxx/ion \
     hardware/ti/omap4xxx/domx/omx_core/inc \
     hardware/ti/omap4xxx/domx/mm_osal/inc \
+    hardware/interfaces/camera/common/1.0/default/include \
     frameworks/base/include/media/stagefright \
+    frameworks/native/include \
     frameworks/native/include/media/hardware \
     frameworks/native/include/media/openmax \
+    frameworks/native/libs/sensor/include \
     external/jpeg \
     external/jhead
 
@@ -77,16 +81,23 @@ LOCAL_SHARED_LIBRARIES:= \
     libtiutils \
     libmm_osal \
     libOMX_Core \
-    libcamera_client \
-    libgui \
     libdomx \
     libion_ti \
-    libjpeg \
-    libjhead
+    libcamera_metadata \
+    android.frameworks.sensorservice@1.0 \
+    libjpeg
 
-LOCAL_CFLAGS := -fno-short-enums -DCOPY_IMAGE_BUFFER
+#    libjhead
+#    libsensor
+#    libcamera_client
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
+LOCAL_STATIC_LIBRARIES := \
+    android.hardware.camera.common@1.0-helper
+
+LOCAL_CFLAGS := -fno-short-enums -Wno-unused-parameter -DCOPY_IMAGE_BUFFER -Wno-enum-compare-switch
+
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_PROPRIETARY_MODULE := true
 LOCAL_MODULE:= camera.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS:= optional
 
@@ -120,17 +131,21 @@ LOCAL_C_INCLUDES += \
 
 LOCAL_SHARED_LIBRARIES:= \
     libui \
+    libsensor \
     libbinder \
     libutils \
     libcutils \
     liblog \
     libtiutils \
     libcamera_client \
+    libsensor \
     libion_ti \
 
-LOCAL_CFLAGS := -fno-short-enums -DCOPY_IMAGE_BUFFER
+LOCAL_CFLAGS := -fno-short-enums -Wno-unused-parameter -DCOPY_IMAGE_BUFFER
 
-LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_PROPRIETARY_MODULE := true
+
 LOCAL_MODULE:= camera.$(TARGET_BOARD_PLATFORM)
 LOCAL_MODULE_TAGS:= optional
 

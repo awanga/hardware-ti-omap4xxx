@@ -341,7 +341,7 @@ bool CameraArea::areAreasDifferent(Vector< sp<CameraArea> > &area1,
     }
 
     // not going to care about sorting order for now
-    for (int i = 0; i < area1.size(); i++) {
+    for (unsigned int i = 0; i < area1.size(); i++) {
         if (!area1.itemAt(i)->compare(area2.itemAt(i))) {
             return true;
         }

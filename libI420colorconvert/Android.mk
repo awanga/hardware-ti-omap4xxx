@@ -10,7 +10,11 @@ LOCAL_C_INCLUDES:= \
         $(TOP)/frameworks/native/include/media/openmax \
         $(TOP)/frameworks/native/include/media/editor
 
+LOCAL_CFLAGS := -Wno-unused-parameter
+
 LOCAL_SHARED_LIBRARIES :=       \
+
+LOCAL_STATIC_LIBRARIES := libarect
 
 LOCAL_MODULE_TAGS := optional
 

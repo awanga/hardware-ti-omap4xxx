@@ -147,15 +147,15 @@ static OMX_ERRORTYPE OMXCameraAdapterEventHandler(OMX_IN OMX_HANDLETYPE hCompone
                                         OMX_IN OMX_EVENTTYPE eEvent,
                                         OMX_IN OMX_U32 nData1,
                                         OMX_IN OMX_U32 nData2,
-                                        OMX_IN OMX_PTR pEventData);
+                                        OMX_IN OMX_PTR pEventData) __attribute__((unused));
 
 static OMX_ERRORTYPE OMXCameraAdapterEmptyBufferDone(OMX_IN OMX_HANDLETYPE hComponent,
                                         OMX_IN OMX_PTR pAppData,
-                                        OMX_IN OMX_BUFFERHEADERTYPE* pBuffer);
+                                        OMX_IN OMX_BUFFERHEADERTYPE* pBuffer) __attribute__((unused));
 
 static OMX_ERRORTYPE OMXCameraAdapterFillBufferDone(OMX_IN OMX_HANDLETYPE hComponent,
                                         OMX_IN OMX_PTR pAppData,
-                                        OMX_IN OMX_BUFFERHEADERTYPE* pBuffHeader);
+                                        OMX_IN OMX_BUFFERHEADERTYPE* pBuffHeader) __attribute__((unused));
 
 struct CapResolution {
     size_t width, height;
@@ -356,8 +356,8 @@ public:
     virtual status_t initialize(CameraProperties::Properties*);
 
     //APIs to configure Camera adapter and get the current parameter set
-    virtual status_t setParameters(const CameraParameters& params);
-    virtual void getParameters(CameraParameters& params);
+    virtual status_t setParameters(const hardware::camera::common::V1_0::helper::CameraParameters& params);
+    virtual void getParameters(hardware::camera::common::V1_0::helper::CameraParameters& params);
 
     // API
     virtual status_t UseBuffersPreview(void* bufArr, int num);
@@ -445,7 +445,7 @@ private:
     status_t setThumbnailParams(unsigned int width, unsigned int height, unsigned int quality);
 
     //EXIF
-    status_t setParametersEXIF(const CameraParameters &params,
+    status_t setParametersEXIF(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                BaseCameraAdapter::AdapterState state);
     status_t convertGPSCoord(double coord, int &deg, int &min, int &sec, int &secDivisor);
     status_t setupEXIF();
@@ -462,12 +462,12 @@ private:
 
 
     //Focus distances
-    status_t setParametersFocus(const CameraParameters &params,
+    status_t setParametersFocus(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                 BaseCameraAdapter::AdapterState state);
     status_t addFocusDistances(OMX_U32 &near,
                                OMX_U32 &optimal,
                                OMX_U32 &far,
-                               CameraParameters& params);
+                               hardware::camera::common::V1_0::helper::CameraParameters& params);
     status_t encodeFocusDistance(OMX_U32 dist, char *buffer, size_t length);
     status_t getFocusDistances(OMX_U32 &near,OMX_U32 &optimal, OMX_U32 &far);
 
@@ -476,13 +476,13 @@ private:
     status_t enableVideoStabilization(bool enable);
 
     //Digital zoom
-    status_t setParametersZoom(const CameraParameters &params,
+    status_t setParametersZoom(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                BaseCameraAdapter::AdapterState state);
     status_t doZoom(int index);
     status_t advanceZoom();
 
     //3A related parameters
-    status_t setParameters3A(const CameraParameters &params,
+    status_t setParameters3A(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                              BaseCameraAdapter::AdapterState state);
 
     // scene modes
@@ -527,7 +527,7 @@ private:
     //API to set FrameRate using VFR interface
     status_t setVFramerate(OMX_U32 minFrameRate,OMX_U32 maxFrameRate);
 
-    status_t setParametersAlgo(const CameraParameters &params,
+    status_t setParametersAlgo(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                BaseCameraAdapter::AdapterState state);
 
     //Noise filtering
@@ -548,9 +548,9 @@ private:
     status_t setTouchFocus();
 
     //Face detection
-    status_t setParametersFD(const CameraParameters &params,
+    status_t setParametersFD(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                              BaseCameraAdapter::AdapterState state);
-    status_t updateFocusDistances(CameraParameters &params);
+    status_t updateFocusDistances(hardware::camera::common::V1_0::helper::CameraParameters &params);
     status_t setFaceDetection(bool enable, OMX_U32 orientation);
     status_t detectFaces(OMX_BUFFERHEADERTYPE* pBuffHeader,
                          sp<CameraFDResult> &result,
@@ -604,7 +604,7 @@ private:
     static status_t insertAreas(CameraProperties::Properties*, OMX_TI_CAPTYPE&);
     static status_t insertVideoSizes(CameraProperties::Properties*, OMX_TI_CAPTYPE&);
 
-    status_t setParametersCapture(const CameraParameters &params,
+    status_t setParametersCapture(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                   BaseCameraAdapter::AdapterState state);
 
     //Exposure Bracketing
@@ -875,7 +875,7 @@ private:
     OMX_TI_CONFIG_3A_FACE_PRIORITY mFacePriority;
     OMX_TI_CONFIG_3A_REGION_PRIORITY mRegionPriority;
 
-    CameraParameters mParams;
+    hardware::camera::common::V1_0::helper::CameraParameters mParams;
     CameraProperties::Properties* mCapabilities;
     unsigned int mPictureRotation;
     bool mWaitingForSnapshot;
@@ -895,7 +895,7 @@ private:
 
     bool mIternalRecordingHint;
 
-    CameraParameters mParameters;
+    hardware::camera::common::V1_0::helper::CameraParameters mParameters;
     bool mOmxInitialized;
     OMXCameraAdapterComponentContext mCameraAdapterParameters;
     bool mFirstTimeInit;

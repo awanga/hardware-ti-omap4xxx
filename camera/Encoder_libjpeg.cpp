@@ -262,32 +262,32 @@ bool ExifElementsTable::isAsciiTag(const char* tag) {
 }
 
 void ExifElementsTable::insertExifToJpeg(unsigned char* jpeg, size_t jpeg_size) {
-    ReadMode_t read_mode = (ReadMode_t)(READ_METADATA | READ_IMAGE);
+    /*ReadMode_t read_mode = (ReadMode_t)(READ_METADATA | READ_IMAGE);
 
     ResetJpgfile();
     if (ReadJpegSectionsFromBuffer(jpeg, jpeg_size, read_mode)) {
         jpeg_opened = true;
         create_EXIF(table, exif_tag_count, gps_tag_count, has_datetime_tag);
-    }
+    }*/
 }
 
 status_t ExifElementsTable::insertExifThumbnailImage(const char* thumb, int len) {
     status_t ret = NO_ERROR;
 
-    if ((len > 0) && jpeg_opened) {
+    /*if ((len > 0) && jpeg_opened) {
         ret = ReplaceThumbnailFromBuffer(thumb, len);
         CAMHAL_LOGDB("insertExifThumbnailImage. ReplaceThumbnail(). ret=%d", ret);
-    }
+    }*/
 
     return ret;
 }
 
 void ExifElementsTable::saveJpeg(unsigned char* jpeg, size_t jpeg_size) {
-    if (jpeg_opened) {
+    /*if (jpeg_opened) {
        WriteJpegToBuffer(jpeg, jpeg_size);
        DiscardData();
        jpeg_opened = false;
-    }
+    }*/
 }
 
 /* public functions */
@@ -300,9 +300,9 @@ ExifElementsTable::~ExifElementsTable() {
         }
     }
 
-    if (jpeg_opened) {
+    /*if (jpeg_opened) {
         DiscardData();
-    }
+    }*/
 }
 
 status_t ExifElementsTable::insertElement(const char* tag, const char* value) {
@@ -324,7 +324,7 @@ status_t ExifElementsTable::insertElement(const char* tag, const char* value) {
         value_length = strlen(value);
     }
 
-    if (IsGpsTag(tag)) {
+    /*if (IsGpsTag(tag)) {
         table[position].GpsTag = TRUE;
         table[position].Tag = GpsTagNameToValue(tag);
         gps_tag_count++;
@@ -336,7 +336,7 @@ status_t ExifElementsTable::insertElement(const char* tag, const char* value) {
         if (strcmp(tag, TAG_DATETIME) == 0) {
             has_datetime_tag = true;
         }
-    }
+    }*/
 
     table[position].DataLength = 0;
     table[position].Value = (char*) malloc(sizeof(char) * (value_length + 1));
@@ -354,7 +354,7 @@ status_t ExifElementsTable::insertElement(const char* tag, const char* value) {
 size_t Encoder_libjpeg::encode(params* input) {
     jpeg_compress_struct    cinfo;
     jpeg_error_mgr jerr;
-    jpeg_destination_mgr jdest;
+    /*jpeg_destination_mgr jdest;*/
     uint8_t* src = NULL, *resize_src = NULL;
     uint8_t* row_tmp = NULL;
     uint8_t* row_src = NULL;
@@ -386,7 +386,7 @@ size_t Encoder_libjpeg::encode(params* input) {
         goto exit;
     }
 
-    if (strcmp(input->format, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
+    if (strcmp(input->format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
         bpp = 1;
         if ((in_width != out_width) || (in_height != out_height)) {
             resize_src = (uint8_t*) malloc(input->dst_size);
@@ -396,7 +396,7 @@ size_t Encoder_libjpeg::encode(params* input) {
     } else if ((in_width != out_width) || (in_height != out_height)) {
         CAMHAL_LOGEB("Encoder: resizing is not supported for this format: %s", input->format);
         goto exit;
-    } else if (strcmp(input->format, CameraParameters::PIXEL_FORMAT_YUV422I)) {
+    } else if (strcmp(input->format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I)) {
         // we currently only support yuv422i and yuv420sp
         CAMHAL_LOGEB("Encoder: format not supported: %s", input->format);
         goto exit;
@@ -436,7 +436,7 @@ size_t Encoder_libjpeg::encode(params* input) {
         JSAMPROW row[1];    /* pointer to JSAMPLE row[s] */
 
         // convert input yuv format to yuv444
-        if (strcmp(input->format, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
+        if (strcmp(input->format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
             nv21_to_yuv(row_tmp, row_src, row_uv, out_width - right_crop);
         } else {
             uyvy_to_yuv(row_tmp, (uint32_t*)row_src, out_width - right_crop);
@@ -447,7 +447,7 @@ size_t Encoder_libjpeg::encode(params* input) {
         row_src = row_src + out_width*bpp;
 
         // move uv row if input format needs it
-        if (strcmp(input->format, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
+        if (strcmp(input->format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
             if (!(cinfo.next_scanline % 2))
                 row_uv = row_uv +  out_width * bpp;
         }

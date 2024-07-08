@@ -35,7 +35,7 @@
 #include "binder/MemoryBase.h"
 #include "binder/MemoryHeapBase.h"
 #include <utils/threads.h>
-#include <camera/CameraParameters.h>
+#include <CameraParameters.h>
 #include <hardware/camera.h>
 #include "MessageQueue.h"
 #include "Semaphore.h"
@@ -267,8 +267,8 @@ class CameraFrame
     mFrameMask(0),
     mQuirks(0) {
 
-      mYuv[0] = NULL;
-      mYuv[1] = NULL;
+      mYuv[0] = 0;
+      mYuv[1] = 0;
     }
 
     //copy constructor
@@ -545,7 +545,7 @@ public:
     //All sub-components of Camera HAL call this whenever any error happens
     virtual void errorNotify(int error);
 
-    status_t startPreviewCallbacks(CameraParameters &params, void *buffers, uint32_t *offsets, int fd, size_t length, size_t count);
+    status_t startPreviewCallbacks(hardware::camera::common::V1_0::helper::CameraParameters &params, void *buffers, uint32_t *offsets, int fd, size_t length, size_t count);
     status_t stopPreviewCallbacks();
 
     status_t enableMsgType(int32_t msgType);
@@ -644,7 +644,7 @@ private:
     KeyedVector<uint32_t, uint32_t> mVideoMetadataBufferMemoryMap;
     KeyedVector<uint32_t, uint32_t> mVideoMetadataBufferReverseMap;
 
-    bool mBufferReleased;
+    bool mBufferReleased __attribute__((unused));
 
     sp< NotificationThread> mNotificationThread;
     EventProvider *mEventProvider;
@@ -810,8 +810,8 @@ public:
     virtual void removeFramePointers() = 0;
 
     //APIs to configure Camera adapter and get the current parameter set
-    virtual int setParameters(const CameraParameters& params) = 0;
-    virtual void getParameters(CameraParameters& params) = 0;
+    virtual int setParameters(const hardware::camera::common::V1_0::helper::CameraParameters& params) = 0;
+    virtual void getParameters(hardware::camera::common::V1_0::helper::CameraParameters& params) = 0;
 
     //API to flush the buffers from Camera
      status_t flushBuffers()
@@ -893,9 +893,9 @@ public:
     virtual int maxQueueableBuffers(unsigned int& queueable) = 0;
 };
 
-static void releaseImageBuffers(void *userData);
+static void releaseImageBuffers(void *userData) __attribute__((unused));
 
-static void endImageCapture(void *userData);
+static void endImageCapture(void *userData) __attribute__((unused));
 
  /**
     Implementation of the Android Camera hardware abstraction layer
@@ -1023,7 +1023,7 @@ public:
 
     /** Set the camera parameters. */
     int    setParameters(const char* params);
-    int    setParameters(const CameraParameters& params);
+    int    setParameters(const hardware::camera::common::V1_0::helper::CameraParameters& params);
 
     /** Return the camera parameters. */
     char*  getParameters();
@@ -1097,7 +1097,7 @@ private:
     //@{
 
     /**  Set the camera parameters specific to Video Recording. */
-    bool        setVideoModeParameters(const CameraParameters&);
+    bool        setVideoModeParameters(const hardware::camera::common::V1_0::helper::CameraParameters&);
 
     /** Reset the camera parameters specific to Video Recording. */
     bool       resetVideoModeParameters();
@@ -1156,7 +1156,7 @@ private:
     void selectFPSRange(int framerate, int *min_fps, int *max_fps);
 
     void setPreferredPreviewRes(int width, int height);
-    void resetPreviewRes(CameraParameters *mParams, int width, int height);
+    void resetPreviewRes(hardware::camera::common::V1_0::helper::CameraParameters *mParams, int width, int height);
 
     //@}
 
@@ -1220,7 +1220,7 @@ private:
 
     void* mCameraAdapterHandle;
 
-    CameraParameters mParameters;
+    hardware::camera::common::V1_0::helper::CameraParameters mParameters;
     bool mPreviewRunning;
     bool mPreviewStateOld;
     bool mRecordingEnabled;

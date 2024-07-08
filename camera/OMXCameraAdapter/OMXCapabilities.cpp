@@ -45,8 +45,8 @@ namespace android {
 static const char PARAM_SEP[] = ",";
 static const int PARAM_SEP_CHAR = ',';
 static const uint32_t VFR_OFFSET = 8;
-static const char VFR_BACKET_START[] = "(";
-static const char VFR_BRACKET_END[] = ")";
+/*static const char VFR_BRACKET_START[] = "(";
+static const char VFR_BRACKET_END[] = ")";*/
 static const char FRAMERATE_COUNT = 10;
 
 /**** look up tables to translate OMX Caps to Parameter ****/
@@ -96,11 +96,11 @@ const CapResolution OMXCameraAdapter::mThumbRes [] = {
 };
 
 const CapPixelformat OMXCameraAdapter::mPixelformats [] = {
-    { OMX_COLOR_FormatCbYCrY, CameraParameters::PIXEL_FORMAT_YUV422I },
-    { OMX_COLOR_FormatYUV420SemiPlanar, CameraParameters::PIXEL_FORMAT_YUV420SP },
-    { OMX_COLOR_Format16bitRGB565, CameraParameters::PIXEL_FORMAT_RGB565 },
+    { OMX_COLOR_FormatCbYCrY, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I },
+    { OMX_COLOR_FormatYUV420SemiPlanar, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP },
+    { OMX_COLOR_Format16bitRGB565, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565 },
     { OMX_COLOR_FormatRawBayer10bit, TICameraParameters::PIXEL_FORMAT_RAW },
-    { OMX_COLOR_FormatYUV420SemiPlanar, CameraParameters::PIXEL_FORMAT_YUV420P },
+    { OMX_COLOR_FormatYUV420SemiPlanar, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P },
 };
 
 const CapFramerate OMXCameraAdapter::mFramerates [] = {
@@ -374,7 +374,7 @@ size_t OMXCameraAdapter::encodeZoomCap(OMX_S32 maxZoom,
                      size_t capCount,
                      char * buffer,
                      size_t bufferSize) {
-    status_t res = NO_ERROR;
+    /*status_t res = NO_ERROR;*/
     size_t ret = 0;
 
     LOG_FUNCTION_NAME;
@@ -614,7 +614,7 @@ status_t OMXCameraAdapter::insertImageFormats(CameraProperties::Properties* para
 
     if ( NO_ERROR == ret ) {
         //jpeg is not supported in OMX capabilies yet
-        strncat(supported, CameraParameters::PIXEL_FORMAT_JPEG, MAX_PROP_VALUE_LENGTH - 1);
+        strncat(supported, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_JPEG, MAX_PROP_VALUE_LENGTH - 1);
         params->set(CameraProperties::SUPPORTED_PICTURE_FORMATS, supported);
     }
 
@@ -646,7 +646,7 @@ status_t OMXCameraAdapter::insertPreviewFormats(CameraProperties::Properties* pa
     if ( NO_ERROR == ret ) {
         // need to advertise we support YV12 format
         // We will program preview port with NV21 when we see application set YV12
-        strncat(supported, CameraParameters::PIXEL_FORMAT_YUV420P, MAX_PROP_VALUE_LENGTH - 1);
+        strncat(supported, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P, MAX_PROP_VALUE_LENGTH - 1);
         params->set(CameraProperties::SUPPORTED_PREVIEW_FORMATS, supported);
     }
 
@@ -935,11 +935,11 @@ status_t OMXCameraAdapter::insertFocusModes(CameraProperties::Properties* params
         caps.eFocusModes[0] == OMX_IMAGE_FocusControlOff) {
         // Focus is not supported by camera
         // Advertise this to app as infinitiy focus mode
-        strncat(supported, CameraParameters::FOCUS_MODE_INFINITY, MAX_PROP_NAME_LENGTH);
+        strncat(supported, hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_INFINITY, MAX_PROP_NAME_LENGTH);
     } else {
         // Focus is supported but these modes are not supported by the
         // capability feature. Apply manually
-        strncat(supported, CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE, MAX_PROP_NAME_LENGTH);
+        strncat(supported, hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE, MAX_PROP_NAME_LENGTH);
     }
 
     params->set(CameraProperties::SUPPORTED_FOCUS_MODES, supported);
@@ -976,7 +976,7 @@ status_t OMXCameraAdapter::insertFlickerModes(CameraProperties::Properties* para
 status_t OMXCameraAdapter::insertAreas(CameraProperties::Properties* params, OMX_TI_CAPTYPE &caps) {
     status_t ret = NO_ERROR;
     char supported[MAX_PROP_VALUE_LENGTH];
-    const char *p;
+    /*const char *p;*/
 
     LOG_FUNCTION_NAME;
 
@@ -1011,8 +1011,8 @@ status_t OMXCameraAdapter::insertLocks(CameraProperties::Properties* params, OMX
 
 status_t OMXCameraAdapter::insertDefaults(CameraProperties::Properties* params, OMX_TI_CAPTYPE &caps) {
     status_t ret = NO_ERROR;
-    char supported[MAX_PROP_VALUE_LENGTH];
-    const char *p;
+    /*char supported[MAX_PROP_VALUE_LENGTH];
+    const char *p;*/
 
     LOG_FUNCTION_NAME;
 
@@ -1024,7 +1024,7 @@ status_t OMXCameraAdapter::insertDefaults(CameraProperties::Properties* params, 
     params->set(CameraProperties::SUPPORTED_EV_STEP, DEFAULT_EV_STEP);
     params->set(CameraProperties::EXPOSURE_MODE, DEFAULT_EXPOSURE_MODE);
     params->set(CameraProperties::FLASH_MODE, DEFAULT_FLASH_MODE);
-    char *pos = strstr(params->get(CameraProperties::SUPPORTED_FOCUS_MODES), DEFAULT_FOCUS_MODE_PREFERRED);
+    const char *pos = strstr(params->get(CameraProperties::SUPPORTED_FOCUS_MODES), DEFAULT_FOCUS_MODE_PREFERRED);
     if ( NULL != pos )
         {
         params->set(CameraProperties::FOCUS_MODE, DEFAULT_FOCUS_MODE_PREFERRED);
@@ -1108,7 +1108,7 @@ status_t OMXCameraAdapter::insertSenMount(CameraProperties::Properties* params, 
 
 status_t OMXCameraAdapter::insertCapabilities(CameraProperties::Properties* params, OMX_TI_CAPTYPE &caps) {
     status_t ret = NO_ERROR;
-    char supported[MAX_PROP_VALUE_LENGTH];
+    /*char supported[MAX_PROP_VALUE_LENGTH];*/
 
     LOG_FUNCTION_NAME;
 

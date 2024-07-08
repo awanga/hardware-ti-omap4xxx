@@ -69,7 +69,7 @@ const SceneModesEntry* OMXCameraAdapter::getSceneModeEntry(const char* name,
     return entry;
 }
 
-status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
+status_t OMXCameraAdapter::setParameters3A(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                            BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -83,7 +83,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
 
     Mutex::Autolock lock(m3ASettingsUpdateLock);
 
-    str = params.get(CameraParameters::KEY_SCENE_MODE);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_SCENE_MODE);
     mode = getLUTvalue_HALtoOMX( str, SceneLUT);
     if ( mFirstTimeInit || ((str != NULL) && ( mParameters3A.SceneMode != mode )) ) {
         if ( 0 <= mode ) {
@@ -128,7 +128,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
 
 #endif
 
-    str = params.get(CameraParameters::KEY_WHITE_BALANCE);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_WHITE_BALANCE);
     mode = getLUTvalue_HALtoOMX( str, WBalLUT);
     if (mFirstTimeInit || ((str != NULL) && (mode != mParameters3A.WhiteBallance)))
         {
@@ -192,7 +192,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
 
 #endif
 
-    str = params.get(CameraParameters::KEY_ANTIBANDING);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_ANTIBANDING);
     mode = getLUTvalue_HALtoOMX(str,FlickerLUT);
     if ( mFirstTimeInit || ( ( str != NULL ) && ( mParameters3A.Flicker != mode ) ))
         {
@@ -221,7 +221,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
 
 #endif
 
-    str = params.get(CameraParameters::KEY_FOCUS_MODE);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_MODE);
     mode = getLUTvalue_HALtoOMX(str, FocusLUT);
     if ( (mFirstTimeInit || ((str != NULL) && (mParameters3A.Focus != mode))))
         {
@@ -237,8 +237,8 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
         CAMHAL_LOGDB("Focus %x", mParameters3A.Focus);
         }
 
-    str = params.get(CameraParameters::KEY_EXPOSURE_COMPENSATION);
-    varint = params.getInt(CameraParameters::KEY_EXPOSURE_COMPENSATION);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_EXPOSURE_COMPENSATION);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_EXPOSURE_COMPENSATION);
     if ( mFirstTimeInit ||
           (( str != NULL ) &&
                   (mParameters3A.EVCompensation != varint )))
@@ -249,7 +249,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
         mPending3Asettings |= SetEVCompensation;
         }
 
-    str = params.get(CameraParameters::KEY_FLASH_MODE);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FLASH_MODE);
     mode = getLUTvalue_HALtoOMX( str, FlashLUT);
     if (  mFirstTimeInit || (( str != NULL ) && ( mParameters3A.FlashMode != mode )) )
         {
@@ -267,7 +267,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
     CAMHAL_LOGVB("Flash Setting %s", str);
     CAMHAL_LOGVB("FlashMode %d", mParameters3A.FlashMode);
 
-    str = params.get(CameraParameters::KEY_EFFECT);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_EFFECT);
     mode = getLUTvalue_HALtoOMX( str, EffLUT);
     if (  mFirstTimeInit || (( str != NULL ) && ( mParameters3A.Effect != mode )) )
         {
@@ -279,12 +279,12 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
             }
         }
 
-    str = params.get(CameraParameters::KEY_AUTO_EXPOSURE_LOCK_SUPPORTED);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_EXPOSURE_LOCK_SUPPORTED);
     if ( (str != NULL) && (!strcmp(str, "true")) )
       {
         OMX_BOOL lock = OMX_FALSE;
         mUserSetExpLock = OMX_FALSE;
-        str = params.get(CameraParameters::KEY_AUTO_EXPOSURE_LOCK);
+        str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_EXPOSURE_LOCK);
         if (str && ((strcmp(str, "true")) == 0))
           {
             CAMHAL_LOGVA("Locking Exposure");
@@ -304,12 +304,12 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
           }
       }
 
-    str = params.get(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK_SUPPORTED);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK_SUPPORTED);
     if ( (str != NULL) && (!strcmp(str, "true")) )
       {
         OMX_BOOL lock = OMX_FALSE;
         mUserSetWbLock = OMX_FALSE;
-        str = params.get(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK);
+        str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK);
         if (str && ((strcmp(str, "true")) == 0))
           {
             CAMHAL_LOGVA("Locking WhiteBalance");
@@ -339,12 +339,12 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
         setFocusLock(mParameters3A);
     }
 
-    str = params.get(CameraParameters::KEY_METERING_AREAS);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_METERING_AREAS);
     if ( (str != NULL) ) {
         size_t MAX_METERING_AREAS;
         Vector< sp<CameraArea> > tempAreas;
 
-        MAX_METERING_AREAS = atoi(params.get(CameraParameters::KEY_MAX_NUM_METERING_AREAS));
+        MAX_METERING_AREAS = atoi(params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_MAX_NUM_METERING_AREAS));
 
         Mutex::Autolock lock(mMeteringAreasLock);
 
@@ -359,7 +359,7 @@ status_t OMXCameraAdapter::setParameters3A(const CameraParameters &params,
 
             if ( MAX_METERING_AREAS >= mMeteringAreas.size() ) {
                 CAMHAL_LOGDB("Setting Metering Areas %s",
-                        params.get(CameraParameters::KEY_METERING_AREAS));
+                        params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_METERING_AREAS));
 
                 mPending3Asettings |= SetMeteringAreas;
             } else {
@@ -480,7 +480,7 @@ static bool isFlashDisabled() {
 
 status_t OMXCameraAdapter::setFlashMode(Gen3A_settings& Gen3A)
 {
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMX_IMAGE_PARAM_FLASHCONTROLTYPE flash;
     OMX_CONFIG_FOCUSASSISTTYPE focusAssist;
@@ -549,7 +549,7 @@ status_t OMXCameraAdapter::setFlashMode(Gen3A_settings& Gen3A)
 
 status_t OMXCameraAdapter::getFlashMode(Gen3A_settings& Gen3A)
 {
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMX_IMAGE_PARAM_FLASHCONTROLTYPE flash;
 
@@ -584,7 +584,7 @@ status_t OMXCameraAdapter::setFocusMode(Gen3A_settings& Gen3A)
     status_t ret = NO_ERROR;
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE focus;
-    size_t top, left, width, height, weight;
+    /*size_t top, left, width, height, weight;*/
     OMX_CONFIG_BOOLEANTYPE bOMX;
 
     LOG_FUNCTION_NAME;
@@ -690,10 +690,10 @@ status_t OMXCameraAdapter::setFocusMode(Gen3A_settings& Gen3A)
 
 status_t OMXCameraAdapter::getFocusMode(Gen3A_settings& Gen3A)
 {
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE focus;
-    size_t top, left, width, height, weight;
+    /*size_t top, left, width, height, weight;*/
 
     LOG_FUNCTION_NAME;
 
@@ -1431,7 +1431,7 @@ status_t OMXCameraAdapter::set3ALock(OMX_BOOL toggleExp, OMX_BOOL toggleWb, OMX_
             setExposureLock(mParameters3A);
         }
 
-        mParams.set(CameraParameters::KEY_AUTO_EXPOSURE_LOCK, lock_state_exp);
+        mParams.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_EXPOSURE_LOCK, lock_state_exp);
     }
 
     OMX_INIT_STRUCT_PTR (&lock, OMX_IMAGE_CONFIG_LOCKTYPE);
@@ -1478,7 +1478,7 @@ status_t OMXCameraAdapter::set3ALock(OMX_BOOL toggleExp, OMX_BOOL toggleWb, OMX_
             setWhiteBalanceLock(mParameters3A);
         }
 
-        mParams.set(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK, lock_state_wb);
+        mParams.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK, lock_state_wb);
     }
  EXIT:
     return ErrorUtils::omxToAndroidError(eError);
@@ -1590,7 +1590,7 @@ status_t OMXCameraAdapter::apply3Asettings( Gen3A_settings& Gen3A )
 {
     status_t ret = NO_ERROR;
     unsigned int currSett; // 32 bit
-    int portIndex;
+    /*int portIndex;*/
 
     LOG_FUNCTION_NAME;
 

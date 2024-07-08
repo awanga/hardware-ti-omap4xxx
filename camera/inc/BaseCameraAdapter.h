@@ -44,8 +44,8 @@ public:
     virtual void removeFramePointers();
 
     //APIs to configure Camera adapter and get the current parameter set
-    virtual status_t setParameters(const CameraParameters& params) = 0;
-    virtual void getParameters(CameraParameters& params)  = 0;
+    virtual status_t setParameters(const hardware::camera::common::V1_0::helper::CameraParameters& params) = 0;
+    virtual void getParameters(hardware::camera::common::V1_0::helper::CameraParameters& params)  = 0;
 
     //API to send a command to the camera
     virtual status_t sendCommand(CameraCommands operation, int value1 = 0, int value2 = 0, int value3 = 0 );
@@ -127,7 +127,7 @@ protected:
     //API to get required data frame size
     virtual status_t getFrameDataSize(size_t &dataFrameSize, size_t bufferCount);
 
-    //API to get required picture buffers size with the current configuration in CameraParameters
+    //API to get required picture buffers size with the current configuration in hardware::camera::common::V1_0::helper::CameraParameters
     virtual status_t getPictureBufferSize(size_t &length, size_t bufferCount);
 
     // Should be implemented by deriving classes in order to start face detection

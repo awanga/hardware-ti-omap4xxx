@@ -41,17 +41,17 @@ OMX_COLOR_FORMATTYPE toOMXPixFormat(const char* parameters_format)
 
     if ( parameters_format != NULL )
     {
-        if (strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
+        if (strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
             {
             CAMHAL_LOGDA("CbYCrY format selected");
             pixFormat = OMX_COLOR_FormatCbYCrY;
             }
-        else if(strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0)
+        else if(strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0)
             {
             CAMHAL_LOGDA("YUV420SP format selected");
             pixFormat = OMX_COLOR_FormatYUV420SemiPlanar;
             }
-        else if(strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0)
+        else if(strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0)
             {
             CAMHAL_LOGDA("RGB565 format selected");
             pixFormat = OMX_COLOR_Format16bitRGB565;
@@ -76,53 +76,53 @@ const char* getPixFormatConstant(const char* parameters_format)
 
     if ( parameters_format != NULL )
     {
-        if (strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
+        if (strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
         {
             CAMHAL_LOGVA("CbYCrY format selected");
-            pixFormat = (const char *) CameraParameters::PIXEL_FORMAT_YUV422I;
+            pixFormat = (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
         }
-        else if(strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
-                strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_YUV420P) == 0)
+        else if(strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
+                strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0)
         {
             // TODO(XXX): We are treating YV12 the same as YUV420SP
             CAMHAL_LOGVA("YUV420SP format selected");
-            pixFormat = (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP;
+            pixFormat = (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP;
         }
-        else if(strcmp(parameters_format, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0)
+        else if(strcmp(parameters_format, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0)
         {
             CAMHAL_LOGVA("RGB565 format selected");
-            pixFormat = (const char *) CameraParameters::PIXEL_FORMAT_RGB565;
+            pixFormat = (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565;
         }
         else
         {
             CAMHAL_LOGEA("Invalid format, CbYCrY format selected as default");
-            pixFormat = (const char *) CameraParameters::PIXEL_FORMAT_YUV422I;
+            pixFormat = (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
         }
     }
     else
     {
         CAMHAL_LOGEA("Preview format is NULL, defaulting to CbYCrY");
-        pixFormat = (const char *) CameraParameters::PIXEL_FORMAT_YUV422I;
+        pixFormat = (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
     }
 
     return pixFormat;
 }
 
-const size_t getBufSize(const char* parameters_format, int width, int height)
+/*const*/ size_t getBufSize(const char* parameters_format, int width, int height)
 {
     int buf_size;
 
     if ( parameters_format != NULL ) {
         if (strcmp(parameters_format,
-                  (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
+                  (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
             buf_size = width * height * 2;
         }
-        else if((strcmp(parameters_format, CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) ||
-                (strcmp(parameters_format, CameraParameters::PIXEL_FORMAT_YUV420P) == 0)) {
+        else if((strcmp(parameters_format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) ||
+                (strcmp(parameters_format, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0)) {
             buf_size = width * height * 3 / 2;
         }
         else if(strcmp(parameters_format,
-                      (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
+                      (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
             buf_size = width * height * 2;
         } else {
             CAMHAL_LOGEA("Invalid format");
@@ -415,8 +415,8 @@ int ANativeWindowDisplayAdapter::enableDisplay(int width, int height, struct tim
 
 int ANativeWindowDisplayAdapter::disableDisplay(bool cancel_buffer)
 {
-    status_t ret = NO_ERROR;
-    GraphicBufferMapper &mapper = GraphicBufferMapper::get();
+    /*status_t ret = NO_ERROR;
+    GraphicBufferMapper &mapper = GraphicBufferMapper::get();*/
 
     LOG_FUNCTION_NAME;
 
@@ -722,7 +722,7 @@ uint32_t * ANativeWindowDisplayAdapter::getOffsets()
         mOffsetsMap = new uint32_t[lnumBufs];
         for(int i = 0; i < mBufferCount; i++)
         {
-            IMG_native_handle_t* handle =  (IMG_native_handle_t*) *(mBufferHandleMap[i]);
+            /*IMG_native_handle_t* handle =  (IMG_native_handle_t*) *(mBufferHandleMap[i]);*/
             mOffsetsMap[i] = 0;
         }
     }
@@ -844,7 +844,7 @@ int ANativeWindowDisplayAdapter::freeBuffer(void* buf)
     LOG_FUNCTION_NAME;
 
     int *buffers = (int *) buf;
-    status_t ret = NO_ERROR;
+    /*status_t ret = NO_ERROR;*/
 
     Mutex::Autolock lock(mLock);
 
@@ -900,7 +900,7 @@ int ANativeWindowDisplayAdapter::useBuffers(void *bufArr, int num)
 void ANativeWindowDisplayAdapter::displayThread()
 {
     bool shouldLive = true;
-    int timeout = 0;
+    /*int timeout = 0;*/
     status_t ret;
 
     LOG_FUNCTION_NAME;
@@ -1029,8 +1029,8 @@ bool ANativeWindowDisplayAdapter::processHalMsg()
 status_t ANativeWindowDisplayAdapter::PostFrame(ANativeWindowDisplayAdapter::DisplayFrame &dispFrame)
 {
     status_t ret = NO_ERROR;
-    uint32_t actualFramesWithDisplay = 0;
-    android_native_buffer_t *buffer = NULL;
+    /*uint32_t actualFramesWithDisplay = 0;
+    android_native_buffer_t *buffer = NULL;*/
     GraphicBufferMapper &mapper = GraphicBufferMapper::get();
     int i;
 
@@ -1066,15 +1066,15 @@ status_t ANativeWindowDisplayAdapter::PostFrame(ANativeWindowDisplayAdapter::Dis
             CAMHAL_LOGDB("Offset %d xOff = %d, yOff = %d", dispFrame.mOffset, xOff, yOff);
             uint8_t bytesPerPixel;
             ///Calculate bytes per pixel based on the pixel format
-            if(strcmp(mPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
+            if(strcmp(mPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
                 {
                 bytesPerPixel = 2;
                 }
-            else if(strcmp(mPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0)
+            else if(strcmp(mPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0)
                 {
                 bytesPerPixel = 2;
                 }
-            else if(strcmp(mPixelFormat, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0)
+            else if(strcmp(mPixelFormat, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0)
                 {
                 bytesPerPixel = 1;
                 }

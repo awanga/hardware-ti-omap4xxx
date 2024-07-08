@@ -33,7 +33,7 @@
 
 namespace android {
 
-status_t OMXCameraAdapter::setParametersAlgo(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersAlgo(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                              BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -223,8 +223,8 @@ status_t OMXCameraAdapter::setParametersAlgo(const CameraParameters &params,
 
     ///Set VSTAB Configuration
     bool vstabEnabled = false;
-    valstr = params.get(CameraParameters::KEY_VIDEO_STABILIZATION);
-    if (valstr && strcmp(valstr, CameraParameters::TRUE) == 0) {
+    valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_VIDEO_STABILIZATION);
+    if (valstr && strcmp(valstr, hardware::camera::common::V1_0::helper::CameraParameters::TRUE) == 0) {
         CAMHAL_LOGDA("VSTAB Enabled");
         vstabEnabled = true;
         }
@@ -637,7 +637,7 @@ status_t OMXCameraAdapter::setCaptureMode(OMXCameraAdapter::CaptureMode mode)
             }
         else if( OMXCameraAdapter::HIGH_QUALITY_ZSL== mode )
             {
-            const char* valstr = NULL;
+            /*const char* valstr = NULL;*/
             CAMHAL_LOGDA("Camera mode: HIGH QUALITY_ZSL");
             camMode.eCamOperatingMode = OMX_TI_CaptureImageProfileZeroShutterLag;
 

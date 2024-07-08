@@ -32,11 +32,11 @@
 
 namespace android {
 
-status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersCapture(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                                 BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
-    const char *str = NULL;
+    /*const char *str = NULL;*/
     int w, h;
     OMX_COLOR_FORMATTYPE pixFormat;
     const char *valstr = NULL;
@@ -64,23 +64,23 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
     CAMHAL_LOGVB("Image: cap.mHeight = %d", (int)cap->mHeight);
 
     if ((valstr = params.getPictureFormat()) != NULL) {
-        if (strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
+        if (strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0) {
             CAMHAL_LOGDA("CbYCrY format selected");
             pixFormat = OMX_COLOR_FormatCbYCrY;
-            mPictureFormatFromClient = CameraParameters::PIXEL_FORMAT_YUV422I;
-        } else if(strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
+            mPictureFormatFromClient = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I;
+        } else if(strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0) {
             CAMHAL_LOGDA("YUV420SP format selected");
             pixFormat = OMX_COLOR_FormatYUV420SemiPlanar;
-            mPictureFormatFromClient = CameraParameters::PIXEL_FORMAT_YUV420SP;
-        } else if(strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
+            mPictureFormatFromClient = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP;
+        } else if(strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0) {
             CAMHAL_LOGDA("RGB565 format selected");
             pixFormat = OMX_COLOR_Format16bitRGB565;
-            mPictureFormatFromClient = CameraParameters::PIXEL_FORMAT_RGB565;
-        } else if (strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_JPEG) == 0) {
+            mPictureFormatFromClient = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565;
+        } else if (strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_JPEG) == 0) {
             CAMHAL_LOGDA("JPEG format selected");
             pixFormat = OMX_COLOR_FormatUnused;
             mCodingMode = CodingNone;
-            mPictureFormatFromClient = CameraParameters::PIXEL_FORMAT_JPEG;
+            mPictureFormatFromClient = hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_JPEG;
         } else if (strcmp(valstr, (const char *) TICameraParameters::PIXEL_FORMAT_JPS) == 0) {
             CAMHAL_LOGDA("JPS format selected");
             pixFormat = OMX_COLOR_FormatUnused;
@@ -135,7 +135,7 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
 
 #endif
 
-    varint = params.getInt(CameraParameters::KEY_ROTATION);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_ROTATION);
     if ( varint != -1 )
         {
         if ( ( unsigned int )  varint != mPictureRotation) {
@@ -191,7 +191,7 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
 
 #endif
 
-    varint = params.getInt(CameraParameters::KEY_JPEG_QUALITY);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_QUALITY);
     if ( ( varint >= MIN_JPEG_QUALITY ) &&
          ( varint  <= MAX_JPEG_QUALITY ) )
         {
@@ -208,7 +208,7 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
 
     CAMHAL_LOGVB("Picture Quality set %d", mPictureQuality);
 
-    varint = params.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH);
     if ( varint >= 0 )
         {
         if ( ( unsigned int ) varint != mThumbWidth) {
@@ -225,7 +225,7 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
 
     CAMHAL_LOGVB("Picture Thumb width set %d", mThumbWidth);
 
-    varint = params.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT);
     if ( varint >= 0 )
         {
         if ( ( unsigned int ) varint != mThumbHeight) {
@@ -242,7 +242,7 @@ status_t OMXCameraAdapter::setParametersCapture(const CameraParameters &params,
 
     CAMHAL_LOGVB("Picture Thumb height set %d", mThumbHeight);
 
-    varint = params.getInt(CameraParameters::KEY_JPEG_THUMBNAIL_QUALITY);
+    varint = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_JPEG_THUMBNAIL_QUALITY);
     if ( ( varint >= MIN_JPEG_QUALITY ) &&
          ( varint <= MAX_JPEG_QUALITY ) )
         {
@@ -279,7 +279,7 @@ status_t OMXCameraAdapter::getPictureBufferSize(size_t &length, size_t bufferCou
 {
     status_t ret = NO_ERROR;
     OMXCameraPortParameters *imgCaptureData = NULL;
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
+    /*OMX_ERRORTYPE eError = OMX_ErrorNone;*/
 
     LOG_FUNCTION_NAME;
 
@@ -1057,7 +1057,7 @@ status_t OMXCameraAdapter::UseBuffersCapture(void* bufArr, int num)
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMXCameraPortParameters * imgCaptureData = NULL;
     uint32_t *buffers = (uint32_t*)bufArr;
-    OMXCameraPortParameters cap;
+    /*OMXCameraPortParameters cap;*/
 
     imgCaptureData = &mCameraAdapterParameters.mCameraPortParams[mCameraAdapterParameters.mImagePortIndex];
 

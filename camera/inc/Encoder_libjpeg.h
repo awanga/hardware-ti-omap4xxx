@@ -85,8 +85,8 @@ static const char TAG_CUSTOM_RENDERED[] = "CustomRendered";
 class ExifElementsTable {
     public:
         ExifElementsTable() :
-           gps_tag_count(0), exif_tag_count(0), position(0),
-           jpeg_opened(false), has_datetime_tag(false) { }
+           gps_tag_count(0), exif_tag_count(0), position(0)/*,
+           jpeg_opened(false), has_datetime_tag(false)*/ { }
         ~ExifElementsTable();
 
         status_t insertElement(const char* tag, const char* value);
@@ -101,8 +101,8 @@ class ExifElementsTable {
         unsigned int gps_tag_count;
         unsigned int exif_tag_count;
         unsigned int position;
-        bool jpeg_opened;
-        bool has_datetime_tag;
+        //bool jpeg_opened;
+        //bool has_datetime_tag;
 };
 
 class Encoder_libjpeg : public Thread {
@@ -149,7 +149,7 @@ class Encoder_libjpeg : public Thread {
             if (mThumbnailInput) {
                 // start thread to encode thumbnail
                 mThumb = new Encoder_libjpeg(mThumbnailInput, NULL, NULL, mType, NULL, NULL, NULL);
-                mThumb->run();
+                mThumb->run("Encoder_libjpeg");
             }
 
             // encode our main image

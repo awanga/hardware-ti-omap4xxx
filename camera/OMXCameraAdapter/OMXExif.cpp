@@ -31,7 +31,7 @@
 
 namespace android {
 
-status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersEXIF(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                              BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -40,7 +40,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
 
     LOG_FUNCTION_NAME;
 
-    if( ( valstr = params.get(CameraParameters::KEY_GPS_LATITUDE) ) != NULL )
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_LATITUDE) ) != NULL )
         {
         gpsPos = strtod(valstr, NULL);
 
@@ -72,7 +72,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         mEXIFData.mGPSData.mLatValid = false;
         }
 
-    if( ( valstr = params.get(CameraParameters::KEY_GPS_LONGITUDE) ) != NULL )
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_LONGITUDE) ) != NULL )
         {
         gpsPos = strtod(valstr, NULL);
 
@@ -104,7 +104,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         mEXIFData.mGPSData.mLongValid = false;
         }
 
-    if( ( valstr = params.get(CameraParameters::KEY_GPS_ALTITUDE) ) != NULL )
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_ALTITUDE) ) != NULL )
         {
         gpsPos = strtod(valstr, NULL);
         mEXIFData.mGPSData.mAltitude = floor(fabs(gpsPos));
@@ -120,7 +120,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         mEXIFData.mGPSData.mAltitudeValid= false;
         }
 
-    if( (valstr = params.get(CameraParameters::KEY_GPS_TIMESTAMP)) != NULL )
+    if( (valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_TIMESTAMP)) != NULL )
         {
         long gpsTimestamp = strtol(valstr, NULL, 10);
         struct tm *timeinfo = gmtime( ( time_t * ) & (gpsTimestamp) );
@@ -141,7 +141,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         mEXIFData.mGPSData.mTimeStampValid = false;
         }
 
-    if( ( valstr = params.get(CameraParameters::KEY_GPS_TIMESTAMP) ) != NULL )
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_TIMESTAMP) ) != NULL )
         {
         long gpsDatestamp = strtol(valstr, NULL, 10);
         struct tm *timeinfo = gmtime( ( time_t * ) & (gpsDatestamp) );
@@ -160,7 +160,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         mEXIFData.mGPSData.mDatestampValid = false;
         }
 
-    if( ( valstr = params.get(CameraParameters::KEY_GPS_PROCESSING_METHOD) ) != NULL )
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_GPS_PROCESSING_METHOD) ) != NULL )
         {
         strncpy(mEXIFData.mGPSData.mProcMethod, valstr, GPS_PROCESSING_SIZE-1);
         mEXIFData.mGPSData.mProcMethodValid = true;
@@ -213,7 +213,7 @@ status_t OMXCameraAdapter::setParametersEXIF(const CameraParameters &params,
         }
 
 
-    if( ( valstr = params.get(CameraParameters::KEY_FOCAL_LENGTH) ) != NULL ) {
+    if( ( valstr = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCAL_LENGTH) ) != NULL ) {
         CAMHAL_LOGVB("EXIF Focal length: %s", valstr);
         ExifElementsTable::stringToRational(valstr,
                                             &mEXIFData.mFocalNum,
@@ -513,7 +513,7 @@ status_t OMXCameraAdapter::setupEXIF_libjpeg(ExifElementsTable* exifTable,
                                              OMX_TI_WHITEBALANCERESULTTYPE* pWhiteBalanceData)
 {
     status_t ret = NO_ERROR;
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
+    /*OMX_ERRORTYPE eError = OMX_ErrorNone;*/
     struct timeval sTv;
     struct tm *pTime;
     OMXCameraPortParameters * capData = NULL;
@@ -719,7 +719,7 @@ status_t OMXCameraAdapter::setupEXIF_libjpeg(ExifElementsTable* exifTable,
         snprintf(temp_value,
                  sizeof(temp_value)/sizeof(char),
                  "%u/%u",
-                 pAncillaryData->nExposureTime, 1000000);
+                 (unsigned int)pAncillaryData->nExposureTime, 1000000);
         exifTable->insertElement(TAG_EXPOSURETIME, temp_value);
 
         // ApertureValue and FNumber

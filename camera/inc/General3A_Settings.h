@@ -58,15 +58,15 @@ const userToOMX_LUT isoUserToOMX[] = {
 };
 
 const userToOMX_LUT effects_UserToOMX [] = {
-    { CameraParameters::EFFECT_NONE, OMX_ImageFilterNone },
-    { CameraParameters::EFFECT_NEGATIVE, OMX_ImageFilterNegative },
-    { CameraParameters::EFFECT_SOLARIZE,  OMX_ImageFilterSolarize },
-    { CameraParameters::EFFECT_SEPIA, OMX_ImageFilterSepia },
-    { CameraParameters::EFFECT_MONO, OMX_ImageFilterGrayScale },
-    { CameraParameters::EFFECT_BLACKBOARD, OMX_TI_ImageFilterBlackBoard },
-    { CameraParameters::EFFECT_WHITEBOARD, OMX_TI_ImageFilterWhiteBoard },
-    { CameraParameters::EFFECT_AQUA, OMX_TI_ImageFilterAqua },
-    { CameraParameters::EFFECT_POSTERIZE, OMX_TI_ImageFilterPosterize },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_NONE, OMX_ImageFilterNone },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_NEGATIVE, OMX_ImageFilterNegative },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_SOLARIZE,  OMX_ImageFilterSolarize },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_SEPIA, OMX_ImageFilterSepia },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_MONO, OMX_ImageFilterGrayScale },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_BLACKBOARD, OMX_TI_ImageFilterBlackBoard },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_WHITEBOARD, OMX_TI_ImageFilterWhiteBoard },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_AQUA, OMX_TI_ImageFilterAqua },
+    { hardware::camera::common::V1_0::helper::CameraParameters::EFFECT_POSTERIZE, OMX_TI_ImageFilterPosterize },
 #ifdef OMAP_ENHANCEMENT
     { TICameraParameters::EFFECT_NATURAL, OMX_ImageFilterNatural },
     { TICameraParameters::EFFECT_VIVID, OMX_ImageFilterVivid },
@@ -76,11 +76,11 @@ const userToOMX_LUT effects_UserToOMX [] = {
 };
 
 const userToOMX_LUT scene_UserToOMX [] = {
-    { CameraParameters::SCENE_MODE_AUTO, OMX_Manual },
-    { CameraParameters::SCENE_MODE_ACTION, OMX_TI_Action },
-    { CameraParameters::SCENE_MODE_NIGHT, OMX_TI_Night },
-    { CameraParameters::SCENE_MODE_PARTY, OMX_TI_Party },
-    { CameraParameters::SCENE_MODE_SUNSET, OMX_TI_Sunset },
+    { hardware::camera::common::V1_0::helper::CameraParameters::SCENE_MODE_AUTO, OMX_Manual },
+    { hardware::camera::common::V1_0::helper::CameraParameters::SCENE_MODE_ACTION, OMX_TI_Action },
+    { hardware::camera::common::V1_0::helper::CameraParameters::SCENE_MODE_NIGHT, OMX_TI_Night },
+    { hardware::camera::common::V1_0::helper::CameraParameters::SCENE_MODE_PARTY, OMX_TI_Party },
+    { hardware::camera::common::V1_0::helper::CameraParameters::SCENE_MODE_SUNSET, OMX_TI_Sunset },
 /*********** TODO: These scene modes are not verified. ************
  ***************** Have to verify and reeable later. **************
     { CameraParameters::SCENE_MODE_THEATRE, OMX_TI_Theatre },
@@ -108,11 +108,11 @@ const userToOMX_LUT scene_UserToOMX [] = {
 };
 
 const userToOMX_LUT whiteBal_UserToOMX [] = {
-    { CameraParameters::WHITE_BALANCE_AUTO, OMX_WhiteBalControlAuto },
-    { CameraParameters::WHITE_BALANCE_DAYLIGHT, OMX_WhiteBalControlSunLight },
-    { CameraParameters::WHITE_BALANCE_CLOUDY_DAYLIGHT, OMX_WhiteBalControlCloudy },
-    { CameraParameters::WHITE_BALANCE_FLUORESCENT, OMX_WhiteBalControlFluorescent },
-    { CameraParameters::WHITE_BALANCE_INCANDESCENT, OMX_WhiteBalControlIncandescent },
+    { hardware::camera::common::V1_0::helper::CameraParameters::WHITE_BALANCE_AUTO, OMX_WhiteBalControlAuto },
+    { hardware::camera::common::V1_0::helper::CameraParameters::WHITE_BALANCE_DAYLIGHT, OMX_WhiteBalControlSunLight },
+    { hardware::camera::common::V1_0::helper::CameraParameters::WHITE_BALANCE_CLOUDY_DAYLIGHT, OMX_WhiteBalControlCloudy },
+    { hardware::camera::common::V1_0::helper::CameraParameters::WHITE_BALANCE_FLUORESCENT, OMX_WhiteBalControlFluorescent },
+    { hardware::camera::common::V1_0::helper::CameraParameters::WHITE_BALANCE_INCANDESCENT, OMX_WhiteBalControlIncandescent },
 /********************** THESE ARE CURRENT NOT TUNED PROPERLY *************************
     { CameraParameters::WHITE_BALANCE_SHADE, OMX_TI_WhiteBalControlShade },
     { CameraParameters::WHITE_BALANCE_TWILIGHT, OMX_TI_WhiteBalControlTwilight },
@@ -127,19 +127,19 @@ const userToOMX_LUT whiteBal_UserToOMX [] = {
 };
 
 const userToOMX_LUT antibanding_UserToOMX [] = {
-    { CameraParameters::ANTIBANDING_OFF, OMX_FlickerCancelOff },
-    { CameraParameters::ANTIBANDING_AUTO, OMX_FlickerCancelAuto },
-    { CameraParameters::ANTIBANDING_50HZ, OMX_FlickerCancel50 },
-    { CameraParameters::ANTIBANDING_60HZ, OMX_FlickerCancel60 }
+    { hardware::camera::common::V1_0::helper::CameraParameters::ANTIBANDING_OFF, OMX_FlickerCancelOff },
+    { hardware::camera::common::V1_0::helper::CameraParameters::ANTIBANDING_AUTO, OMX_FlickerCancelAuto },
+    { hardware::camera::common::V1_0::helper::CameraParameters::ANTIBANDING_50HZ, OMX_FlickerCancel50 },
+    { hardware::camera::common::V1_0::helper::CameraParameters::ANTIBANDING_60HZ, OMX_FlickerCancel60 }
 };
 
 const userToOMX_LUT focus_UserToOMX [] = {
-    { CameraParameters::FOCUS_MODE_AUTO, OMX_IMAGE_FocusControlAutoLock },
-    { CameraParameters::FOCUS_MODE_INFINITY, OMX_IMAGE_FocusControlAutoInfinity },
-    { CameraParameters::FOCUS_MODE_INFINITY, OMX_IMAGE_FocusControlHyperfocal },
-    { CameraParameters::FOCUS_MODE_MACRO, OMX_IMAGE_FocusControlAutoMacro },
-    { CameraParameters::FOCUS_MODE_CONTINUOUS_VIDEO, OMX_IMAGE_FocusControlAuto },
-    { CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE, OMX_IMAGE_FocusControlAuto },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_AUTO, OMX_IMAGE_FocusControlAutoLock },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_INFINITY, OMX_IMAGE_FocusControlAutoInfinity },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_INFINITY, OMX_IMAGE_FocusControlHyperfocal },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_MACRO, OMX_IMAGE_FocusControlAutoMacro },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_CONTINUOUS_VIDEO, OMX_IMAGE_FocusControlAuto },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE, OMX_IMAGE_FocusControlAuto },
 #ifdef OMAP_ENHANCEMENT
     { TICameraParameters::FOCUS_MODE_FACE , FOCUS_FACE_PRIORITY },
     { TICameraParameters::FOCUS_MODE_PORTRAIT, OMX_IMAGE_FocusControlPortrait },
@@ -162,11 +162,11 @@ const userToOMX_LUT exposure_UserToOMX [] = {
 };
 
 const userToOMX_LUT flash_UserToOMX [] = {
-    { CameraParameters::FLASH_MODE_OFF           ,OMX_IMAGE_FlashControlOff             },
-    { CameraParameters::FLASH_MODE_ON            ,OMX_IMAGE_FlashControlOn              },
-    { CameraParameters::FLASH_MODE_AUTO          ,OMX_IMAGE_FlashControlAuto            },
-    { CameraParameters::FLASH_MODE_TORCH         ,OMX_IMAGE_FlashControlTorch           },
-    { CameraParameters::FLASH_MODE_RED_EYE        ,OMX_IMAGE_FlashControlRedEyeReduction },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FLASH_MODE_OFF           ,OMX_IMAGE_FlashControlOff             },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FLASH_MODE_ON            ,OMX_IMAGE_FlashControlOn              },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FLASH_MODE_AUTO          ,OMX_IMAGE_FlashControlAuto            },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FLASH_MODE_TORCH         ,OMX_IMAGE_FlashControlTorch           },
+    { hardware::camera::common::V1_0::helper::CameraParameters::FLASH_MODE_RED_EYE        ,OMX_IMAGE_FlashControlRedEyeReduction },
 #ifdef OMAP_ENHANCEMENT
     { TICameraParameters::FLASH_MODE_FILL_IN        ,OMX_IMAGE_FlashControlFillin          }
 #endif

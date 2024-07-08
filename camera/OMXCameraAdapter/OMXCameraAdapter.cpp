@@ -60,7 +60,7 @@ status_t OMXCameraAdapter::initialize(CameraProperties::Properties* caps)
     property_get("debug.camera.framecounts", value, "0");
     mDebugFcs = atoi(value);
 
-    TIMM_OSAL_ERRORTYPE osalError = OMX_ErrorNone;
+    /*TIMM_OSAL_ERRORTYPE osalError = OMX_ErrorNone;*/
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     status_t ret = NO_ERROR;
 
@@ -413,17 +413,17 @@ EXIT:
     return (ret | ErrorUtils::omxToAndroidError(eError));
 }
 
-status_t OMXCameraAdapter::setParameters(const CameraParameters &params)
+status_t OMXCameraAdapter::setParameters(const hardware::camera::common::V1_0::helper::CameraParameters &params)
 {
     LOG_FUNCTION_NAME;
 
-    const char * str = NULL;
-    int mode = 0;
+    /*const char * str = NULL;
+    int mode = 0;*/
     status_t ret = NO_ERROR;
-    bool updateImagePortParams = false;
+    /*bool updateImagePortParams = false;*/
     int minFramerate, maxFramerate, frameRate;
     const char *valstr = NULL;
-    const char *oldstr = NULL;
+    /*const char *oldstr = NULL;*/
     int w, h;
     OMX_COLOR_FORMATTYPE pixFormat;
     BaseCameraAdapter::AdapterState state;
@@ -432,14 +432,14 @@ status_t OMXCameraAdapter::setParameters(const CameraParameters &params)
     ///@todo Include more camera parameters
     if ( (valstr = params.getPreviewFormat()) != NULL )
         {
-        if(strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
-           strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_YUV420P) == 0 ||
-           strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
+        if(strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420SP) == 0 ||
+           strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV420P) == 0 ||
+           strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_YUV422I) == 0)
             {
             CAMHAL_LOGDA("YUV420SP format selected");
             pixFormat = OMX_COLOR_FormatYUV420SemiPlanar;
             }
-        else if(strcmp(valstr, (const char *) CameraParameters::PIXEL_FORMAT_RGB565) == 0)
+        else if(strcmp(valstr, (const char *) hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_RGB565) == 0)
             {
             CAMHAL_LOGDA("RGB565 format selected");
             pixFormat = OMX_COLOR_Format16bitRGB565;
@@ -538,7 +538,7 @@ status_t OMXCameraAdapter::setParameters(const CameraParameters &params)
         }
 
     valstr = params.get(TICameraParameters::KEY_RECORDING_HINT);
-    if (!valstr || (valstr && (strcmp(valstr, CameraParameters::FALSE)))) {
+    if (!valstr || (valstr && (strcmp(valstr, hardware::camera::common::V1_0::helper::CameraParameters::FALSE)))) {
         mIternalRecordingHint = false;
     } else {
         mIternalRecordingHint = true;
@@ -630,11 +630,11 @@ void saveFile(unsigned char   *buff, int width, int height, int format) {
     LOG_FUNCTION_NAME_EXIT;
 }
 
-void OMXCameraAdapter::getParameters(CameraParameters& params)
+void OMXCameraAdapter::getParameters(hardware::camera::common::V1_0::helper::CameraParameters& params)
 {
     status_t ret = NO_ERROR;
-    OMX_CONFIG_EXPOSUREVALUETYPE exp;
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
+    /*OMX_CONFIG_EXPOSUREVALUETYPE exp;
+    OMX_ERRORTYPE eError = OMX_ErrorNone;*/
     BaseCameraAdapter::AdapterState state;
     BaseCameraAdapter::getState(state);
     const char *valstr = NULL;
@@ -657,36 +657,36 @@ void OMXCameraAdapter::getParameters(CameraParameters& params)
        }
 
        valstr = getLUTvalue_OMXtoHAL(mParameters3A.WhiteBallance, WBalLUT);
-       valstr_supported = mParams.get(CameraParameters::KEY_SUPPORTED_WHITE_BALANCE);
+       valstr_supported = mParams.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_SUPPORTED_WHITE_BALANCE);
        if (valstr && valstr_supported && strstr(valstr_supported, valstr))
-           params.set(CameraParameters::KEY_WHITE_BALANCE , valstr);
+           params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_WHITE_BALANCE , valstr);
 
        valstr = getLUTvalue_OMXtoHAL(mParameters3A.FlashMode, FlashLUT);
-       valstr_supported = mParams.get(CameraParameters::KEY_SUPPORTED_FLASH_MODES);
+       valstr_supported = mParams.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_SUPPORTED_FLASH_MODES);
        if (valstr && valstr_supported && strstr(valstr_supported, valstr))
-           params.set(CameraParameters::KEY_FLASH_MODE, valstr);
+           params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FLASH_MODE, valstr);
 
        if ((mParameters3A.Focus == OMX_IMAGE_FocusControlAuto) &&
            (mCapMode != OMXCameraAdapter::VIDEO_MODE)) {
-           valstr = CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE;
+           valstr = hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_MODE_CONTINUOUS_PICTURE;
        } else {
            valstr = getLUTvalue_OMXtoHAL(mParameters3A.Focus, FocusLUT);
        }
-       valstr_supported = mParams.get(CameraParameters::KEY_SUPPORTED_FOCUS_MODES);
+       valstr_supported = mParams.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_SUPPORTED_FOCUS_MODES);
        if (valstr && valstr_supported && strstr(valstr_supported, valstr))
-           params.set(CameraParameters::KEY_FOCUS_MODE, valstr);
+           params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_MODE, valstr);
     }
 
     //Query focus distances only when focus is running
     if ( ( AF_ACTIVE & state ) ||
-         ( NULL == mParameters.get(CameraParameters::KEY_FOCUS_DISTANCES) ) )
+         ( NULL == mParameters.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_DISTANCES) ) )
         {
         updateFocusDistances(params);
         }
     else
         {
-        params.set(CameraParameters::KEY_FOCUS_DISTANCES,
-                   mParameters.get(CameraParameters::KEY_FOCUS_DISTANCES));
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_DISTANCES,
+                   mParameters.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_DISTANCES));
         }
 
 #ifdef OMAP_ENHANCEMENT
@@ -717,7 +717,7 @@ void OMXCameraAdapter::getParameters(CameraParameters& params)
             {
             mZoomParameterIdx += mZoomInc;
             }
-        params.set( CameraParameters::KEY_ZOOM, mZoomParameterIdx);
+        params.set( hardware::camera::common::V1_0::helper::CameraParameters::KEY_ZOOM, mZoomParameterIdx);
         if ( ( mCurrentZoomIdx == mTargetZoomIdx ) &&
              ( mZoomParameterIdx == mCurrentZoomIdx ) )
             {
@@ -744,25 +744,25 @@ void OMXCameraAdapter::getParameters(CameraParameters& params)
         }
     else
         {
-        params.set( CameraParameters::KEY_ZOOM, mCurrentZoomIdx);
+        params.set( hardware::camera::common::V1_0::helper::CameraParameters::KEY_ZOOM, mCurrentZoomIdx);
         }
     }
 
     //Populate current lock status
     if ( mParameters3A.ExposureLock ) {
-        params.set(CameraParameters::KEY_AUTO_EXPOSURE_LOCK,
-                   CameraParameters::TRUE);
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_EXPOSURE_LOCK,
+                   hardware::camera::common::V1_0::helper::CameraParameters::TRUE);
     } else {
-        params.set(CameraParameters::KEY_AUTO_EXPOSURE_LOCK,
-                CameraParameters::FALSE);
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_EXPOSURE_LOCK,
+                hardware::camera::common::V1_0::helper::CameraParameters::FALSE);
     }
 
     if ( mParameters3A.WhiteBalanceLock ) {
-        params.set(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK,
-                CameraParameters::TRUE);
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK,
+                hardware::camera::common::V1_0::helper::CameraParameters::TRUE);
     } else {
-        params.set(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK,
-                CameraParameters::FALSE);
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK,
+                hardware::camera::common::V1_0::helper::CameraParameters::FALSE);
     }
 
     LOG_FUNCTION_NAME_EXIT;
@@ -770,7 +770,7 @@ void OMXCameraAdapter::getParameters(CameraParameters& params)
 
 status_t OMXCameraAdapter::setFormat(OMX_U32 port, OMXCameraPortParameters &portParams)
 {
-    size_t bufferCount;
+    /*size_t bufferCount;*/
 
     LOG_FUNCTION_NAME;
 
@@ -926,9 +926,9 @@ status_t OMXCameraAdapter::flushBuffers()
 {
     status_t ret = NO_ERROR;
     OMX_ERRORTYPE eError = OMX_ErrorNone;
-    TIMM_OSAL_ERRORTYPE err;
+    /*TIMM_OSAL_ERRORTYPE err;
     TIMM_OSAL_U32 uRequestedEvents = OMXCameraAdapter::CAMERA_PORT_FLUSH;
-    TIMM_OSAL_U32 pRetrievedEvents;
+    TIMM_OSAL_U32 pRetrievedEvents;*/
 
     if ( 0 != mFlushSem.Count() )
         {
@@ -1009,7 +1009,7 @@ status_t OMXCameraAdapter::flushBuffers()
 ///API to give the buffers to Adapter
 status_t OMXCameraAdapter::useBuffers(CameraMode mode, void* bufArr, int num, size_t length, unsigned int queueable)
 {
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
+    /*OMX_ERRORTYPE eError = OMX_ErrorNone;*/
     status_t ret = NO_ERROR;
 
     LOG_FUNCTION_NAME;
@@ -1469,7 +1469,7 @@ status_t OMXCameraAdapter::UseBuffersPreview(void* bufArr, int num)
 {
     status_t ret = NO_ERROR;
     OMX_ERRORTYPE eError = OMX_ErrorNone;
-    int tmpHeight, tmpWidth;
+    /*int tmpHeight, tmpWidth;*/
 
     LOG_FUNCTION_NAME;
 
@@ -2699,7 +2699,7 @@ OMX_ERRORTYPE OMXCameraAdapter::OMXCameraAdapterEventHandler(OMX_IN OMX_HANDLETY
    LOG_FUNCTION_NAME_EXIT;
    return eError;
 
-    EXIT:
+    /*EXIT:*/
 
     CAMHAL_LOGEB("Exiting function %s because of eError=%x", __FUNCTION__, eError);
     LOG_FUNCTION_NAME_EXIT;
@@ -2791,7 +2791,7 @@ OMX_ERRORTYPE OMXCameraAdapter::RemoveEvent(OMX_IN OMX_HANDLETYPE hComponent,
                   && ( !msg->arg2 || ( OMX_U32 ) msg->arg2 == nData2 )
                   && msg->arg3)
                 {
-                  Semaphore *sem  = (Semaphore*) msg->arg3;
+                  /*Semaphore *sem  = (Semaphore*) msg->arg3;*/
                   CAMHAL_LOGDA("Event matched, signalling sem");
                   mEventSignalQ.removeAt(i);
                   free(msg);
@@ -2932,7 +2932,7 @@ OMX_ERRORTYPE OMXCameraAdapter::OMXCameraAdapterFillBufferDone(OMX_IN OMX_HANDLE
     OMXCameraPortParameters  *pPortParam;
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     CameraFrame::FrameType typeOfFrame = CameraFrame::ALL_FRAMES;
-    unsigned int refCount = 0;
+    /*unsigned int refCount = 0;*/
     BaseCameraAdapter::AdapterState state, nextState;
     BaseCameraAdapter::getState(state);
     BaseCameraAdapter::getNextState(nextState);
@@ -3082,7 +3082,7 @@ OMX_ERRORTYPE OMXCameraAdapter::OMXCameraAdapterFillBufferDone(OMX_IN OMX_HANDLE
     else if( pBuffHeader->nOutputPortIndex == OMX_CAMERA_PORT_IMAGE_OUT_IMAGE )
         {
         OMX_COLOR_FORMATTYPE pixFormat;
-        const char *valstr = NULL;
+        /*const char *valstr = NULL;*/
 
         pixFormat = mCameraAdapterParameters.mCameraPortParams[mCameraAdapterParameters.mImagePortIndex].mColorFormat;
 
@@ -3092,7 +3092,7 @@ OMX_ERRORTYPE OMXCameraAdapter::OMXCameraAdapterFillBufferDone(OMX_IN OMX_HANDLE
             mask = (unsigned int) CameraFrame::IMAGE_FRAME;
         } else if ( pixFormat == OMX_COLOR_FormatCbYCrY &&
                   ((mPictureFormatFromClient &&
-                    !strcmp(mPictureFormatFromClient, CameraParameters::PIXEL_FORMAT_JPEG)) ||
+                    !strcmp(mPictureFormatFromClient, hardware::camera::common::V1_0::helper::CameraParameters::PIXEL_FORMAT_JPEG)) ||
                     !mPictureFormatFromClient) ) {
             // signals to callbacks that this needs to be coverted to jpeg
             // before returning to framework
@@ -3258,8 +3258,8 @@ status_t OMXCameraAdapter::sendCallBacks(CameraFrame frame, OMX_IN OMX_BUFFERHEA
   frame.mOffset = pBuffHeader->nOffset;
   frame.mWidth = port->mWidth;
   frame.mHeight = port->mHeight;
-  frame.mYuv[0] = NULL;
-  frame.mYuv[1] = NULL;
+  frame.mYuv[0] = 0;
+  frame.mYuv[1] = 0;
 
   if ( onlyOnce && mRecording )
     {
@@ -3340,7 +3340,7 @@ bool OMXCameraAdapter::CommandHandler::Handler()
     TIUTILS::Message msg;
     volatile int forever = 1;
     status_t stat;
-    ErrorNotifier *errorNotify = NULL;
+    /*ErrorNotifier *errorNotify = NULL;*/
 
     LOG_FUNCTION_NAME;
 
@@ -3365,7 +3365,7 @@ bool OMXCameraAdapter::CommandHandler::Handler()
                 stat = mCameraAdapter->doAutoFocus();
                 break;
             }
-            case CommandHandler::COMMAND_EXIT:
+            case (unsigned int)CommandHandler::COMMAND_EXIT:
             {
                 CAMHAL_LOGDA("Exiting command handler");
                 forever = 0;
@@ -3412,7 +3412,7 @@ bool OMXCameraAdapter::OMXCallbackHandler::Handler()
                 mCameraAdapter->handleFocusCallback();
                 break;
             }
-            case CommandHandler::COMMAND_EXIT:
+            case (unsigned int)CommandHandler::COMMAND_EXIT:
             {
                 CAMHAL_LOGDA("Exiting OMX callback handler");
                 forever = 0;
@@ -3640,7 +3640,7 @@ extern "C" int CameraAdapter_Capabilities(CameraProperties::Properties* properti
     CameraProperties::Properties* properties = NULL;
     OMX_ERRORTYPE eError = OMX_ErrorNone;
     OMX_HANDLETYPE handle = NULL;
-    OMX_TI_CAPTYPE caps;
+    /*OMX_TI_CAPTYPE caps;*/
 
     LOG_FUNCTION_NAME;
 

@@ -257,7 +257,7 @@ static S_RESULT SMCPropYacc(uint8_t* pBuffer, uint32_t nBufferLength,
    char* pNameZ = NULL;
    char* pValueZ = NULL;
    LIB_MANIFEST2_CONTEXT sParserContext;
-   char serviceManifestName[1024];
+   /*char serviceManifestName[1024];*/
 
    sParserContext.pManifestName = "Configuration File";
    sParserContext.pManifestContent = pBuffer;
@@ -511,7 +511,8 @@ uint32_t SMCPropGetSystemPropertyAsInt(CONF_FILE* pConfFile, char* pPropertyName
    uint32_t nValue;
    char* pValue=SMCPropGetSystemProperty(pConfFile,pPropertyName);
 
-   if (libString2GetStringAsInt(pValue, &nValue) == S_SUCCESS)
+   //if (libString2GetStringAsInt(pValue, &nValue) == S_SUCCESS)
+   if ( (nValue = strtoul(pValue, NULL, 0)) )
    {
       return nValue;
    }
@@ -522,8 +523,8 @@ uint32_t SMCPropGetSystemPropertyAsInt(CONF_FILE* pConfFile, char* pPropertyName
 S_RESULT SMCPropParseConfigFile(char* pConfigFilename,CONF_FILE* pConfFile)
 {
    S_RESULT nError=S_SUCCESS;
-   void* pFile;
-   uint32_t nFileLength;
+   void* pFile = NULL;
+   uint32_t nFileLength = 0;
    bool bReuseManifest;
 
    assert(pConfFile!=NULL);

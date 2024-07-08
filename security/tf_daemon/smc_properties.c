@@ -314,7 +314,8 @@ int smcGetPropertyAsInt(char *pProp, int *pVal)
       *pVal = 0;
       return 1;
    }
-   if (libString2GetStringAsInt(pStr, (uint32_t*)pVal) == S_SUCCESS)
+   //if (libString2GetStringAsInt(pStr, (uint32_t*)pVal) == S_SUCCESS)
+   if ( (*((uint32_t*)pVal) = strtoul(pStr, NULL, 0)) )
    {
       return 0;
    }

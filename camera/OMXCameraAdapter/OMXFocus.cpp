@@ -36,7 +36,7 @@
 
 namespace android {
 
-status_t OMXCameraAdapter::setParametersFocus(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersFocus(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                               BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -48,9 +48,9 @@ status_t OMXCameraAdapter::setParametersFocus(const CameraParameters &params,
 
     Mutex::Autolock lock(mFocusAreasLock);
 
-    str = params.get(CameraParameters::KEY_FOCUS_AREAS);
+    str = params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_AREAS);
 
-    MAX_FOCUS_AREAS = atoi(params.get(CameraParameters::KEY_MAX_NUM_FOCUS_AREAS));
+    MAX_FOCUS_AREAS = atoi(params.get(hardware::camera::common::V1_0::helper::CameraParameters::KEY_MAX_NUM_FOCUS_AREAS));
 
     if ( NULL != str ) {
         ret = CameraArea::parseAreas(str, ( strlen(str) + 1 ), tempAreas);
@@ -298,7 +298,7 @@ status_t OMXCameraAdapter::getFocusMode(OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE &focus
 status_t OMXCameraAdapter::cancelAutoFocus()
 {
     status_t ret = NO_ERROR;
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
+    /*OMX_ERRORTYPE eError = OMX_ErrorNone;*/
     OMX_IMAGE_CONFIG_FOCUSCONTROLTYPE focusMode;
 
     LOG_FUNCTION_NAME;
@@ -528,7 +528,7 @@ status_t OMXCameraAdapter::checkFocus(OMX_PARAM_FOCUSSTATUSTYPE *eFocusStatus)
     return ret;
 }
 
-status_t OMXCameraAdapter::updateFocusDistances(CameraParameters &params)
+status_t OMXCameraAdapter::updateFocusDistances(hardware::camera::common::V1_0::helper::CameraParameters &params)
 {
     OMX_U32 focusNear, focusOptimal, focusFar;
     status_t ret = NO_ERROR;
@@ -614,7 +614,7 @@ status_t OMXCameraAdapter::encodeFocusDistance(OMX_U32 dist, char *buffer, size_
         {
         if ( 0 == dist )
             {
-            strncpy(buffer, CameraParameters::FOCUS_DISTANCE_INFINITY, ( length - 1 ));
+            strncpy(buffer, hardware::camera::common::V1_0::helper::CameraParameters::FOCUS_DISTANCE_INFINITY, ( length - 1 ));
             }
         else
             {
@@ -632,7 +632,7 @@ status_t OMXCameraAdapter::encodeFocusDistance(OMX_U32 dist, char *buffer, size_
 status_t OMXCameraAdapter::addFocusDistances(OMX_U32 &near,
                                              OMX_U32 &optimal,
                                              OMX_U32 &far,
-                                             CameraParameters& params)
+                                             hardware::camera::common::V1_0::helper::CameraParameters& params)
 {
     status_t ret = NO_ERROR;
 
@@ -671,7 +671,7 @@ status_t OMXCameraAdapter::addFocusDistances(OMX_U32 &near,
                                                                               mFocusDistOptimal,
                                                                               mFocusDistFar);
 
-        params.set(CameraParameters::KEY_FOCUS_DISTANCES, mFocusDistBuffer);
+        params.set(hardware::camera::common::V1_0::helper::CameraParameters::KEY_FOCUS_DISTANCES, mFocusDistBuffer);
         }
 
     LOG_FUNCTION_NAME_EXIT;

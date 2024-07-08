@@ -39,7 +39,7 @@ static const int VerticalFaceSizeThreshold = 30;
 
 namespace android {
 
-status_t OMXCameraAdapter::setParametersFD(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersFD(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                            BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -78,7 +78,7 @@ status_t OMXCameraAdapter::startFaceDetection()
 status_t OMXCameraAdapter::stopFaceDetection()
 {
     status_t ret = NO_ERROR;
-    const char *str = NULL;
+    /*const char *str = NULL;*/
     BaseCameraAdapter::AdapterState state;
     BaseCameraAdapter::getState(state);
 
@@ -191,8 +191,8 @@ status_t OMXCameraAdapter::detectFaces(OMX_BUFFERHEADERTYPE* pBuffHeader,
                                        size_t previewHeight)
 {
     status_t ret = NO_ERROR;
-    OMX_ERRORTYPE eError = OMX_ErrorNone;
-    OMX_TI_FACERESULT *faceResult;
+    /*OMX_ERRORTYPE eError = OMX_ErrorNone;
+    OMX_TI_FACERESULT *faceResult;*/
     OMX_OTHER_EXTRADATATYPE *extraData;
     OMX_FACEDETECTIONTYPE *faceData;
     OMX_TI_PLATFORMPRIVATE *platformPrivate;

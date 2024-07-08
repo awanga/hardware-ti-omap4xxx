@@ -33,7 +33,7 @@
 namespace android {
 
 // lower entries have higher priority
-static const char* g_camera_adapters[] = {
+static const char* g_camera_adapters[] __attribute__((unused)) = {
 #ifdef OMAP4_SUPPORT_OMX_CAMERA_ADAPTER
     "libomxcameraadapter.so",
 #endif

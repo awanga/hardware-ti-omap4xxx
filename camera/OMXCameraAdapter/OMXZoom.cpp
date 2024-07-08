@@ -49,7 +49,7 @@ const int32_t OMXCameraAdapter::ZOOM_STEPS [ZOOM_STAGES] =  {
                                 524288 };
 
 
-status_t OMXCameraAdapter::setParametersZoom(const CameraParameters &params,
+status_t OMXCameraAdapter::setParametersZoom(const hardware::camera::common::V1_0::helper::CameraParameters &params,
                                              BaseCameraAdapter::AdapterState state)
 {
     status_t ret = NO_ERROR;
@@ -60,7 +60,7 @@ status_t OMXCameraAdapter::setParametersZoom(const CameraParameters &params,
     //Immediate zoom should not be avaialable while smooth zoom is running
     if ( ( ZOOM_ACTIVE & state ) != ZOOM_ACTIVE )
         {
-        int zoom = params.getInt(CameraParameters::KEY_ZOOM);
+        int zoom = params.getInt(hardware::camera::common::V1_0::helper::CameraParameters::KEY_ZOOM);
         if( ( zoom >= 0 ) && ( zoom < ZOOM_STAGES ) )
             {
             mTargetZoomIdx = zoom;
@@ -103,7 +103,7 @@ status_t OMXCameraAdapter::doZoom(int index)
         ret = -EINVAL;
         }
 
-    if (mPreviousZoomIndx == index )
+    if (mPreviousZoomIndx == (unsigned int)index )
         {
         return NO_ERROR;
         }
